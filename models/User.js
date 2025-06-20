@@ -35,8 +35,9 @@ const User = sequelize.define('User', {
   tableName: 'users'
 });
 
-
-User.hasMany(require('./Document'), { foreignKey: 'userId', as: 'documents' });
+if (process.env.NODE_ENV !== 'test') {
+  User.hasMany(require('./Document'), { foreignKey: 'userId', as: 'documents' });
+}
 
 
 module.exports = User;
