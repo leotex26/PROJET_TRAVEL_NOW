@@ -1,0 +1,99 @@
+<%- include('partials/header') %>
+
+
+<h1>Mes Réservations</h1>
+
+<% if (registrations.length === 0) { %>
+  <p>Vous n’avez encore effectué aucune réservation.</p>
+<% } else { %>
+  <table class="table-reservations">
+    <thead>
+      <tr>
+        <th>Voyage</th>
+        <th>Dates</th>
+        <th>Prix (€)</th>
+        <th>Statut</th>
+        <th>Documents</th>
+        <th>Dernière mise à jour</th>
+        <th>Statut acompte</th>
+        <th>Paiement acompte</th>
+        <th>Statut paiement</th>
+        <th>Paiement</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% registrations.forEach(res => { %>
+        <tr>
+          <td><%= res.Trip.lieux %></td>
+          <td>
+            du <%= new Date(res.Trip.dateDeb).toLocaleDateString() %> 
+            au <%= new Date(res.Trip.dateFin).toLocaleDateString() %>
+          </td>
+          <td><%= res.prix.toFixed(2) %></td>
+          <td><%= res.statut %></td>
+          <td>
+            <% if (res.documents_ok) { %>
+               OK
+            <% } else { %>
+               Incomplets
+            <% } %>
+          </td>
+          <td><%= new Date(res.updatedAt).toLocaleString() %></td>
+          <% if (res.statut == 'réservé' || res.statut == 'dossier_incomplet' || res.statut == 'en_attente_de_validation' || res.statut == 'validé' ){%>
+            <td>Acompte non payé</td>
+            <td>
+            <form action="/api/payments/<%= res.id %>" method="GET">
+            <button type="submit">Procéder au paiement de l'acompte</button>
+            </form>
+            </td>
+            <%}else{%>
+            <td>Acompte payé</td>
+            <td><button>Paiement effectué</button></td>
+            <%}%>
+            <td>voyage non payé</td>
+            <td><button>Payer</button></td>
+
+          
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+<% } %>
+
+
+<style>
+
+    body{
+        padding:0;
+    }
+
+    form{
+        display: inline;
+        margin: 0;
+        padding: 0;
+        border: none;
+    }
+
+
+  .table-reservations {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .table-reservations th,
+  .table-reservations td {
+    padding: 0.8em;
+    border: 1px solid #ccc;
+    text-align: center;
+  }
+
+  .table-reservations th {
+    background-color: #f5f5f5;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+
+</style>

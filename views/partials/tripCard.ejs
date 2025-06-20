@@ -1,0 +1,32 @@
+<div class="trip-card">
+  <h2><a href="/api/trips/<%= trip.id %>"><%= trip.lieux %></a></h2>
+  <p>Du <%= trip.dateDeb.toLocaleDateString() %> au <%= trip.dateFin.toLocaleDateString() %></p>
+  <p><strong><%= trip.statut %></strong></p>
+
+  <% if (isAdmin) { %>
+    <% if (trip.statut !== 'ANNULÉ') { %>
+      <form action="/api/trips/<%= trip.id %>/cancel?_method=PATCH" method="POST" onsubmit="return confirm('Confirmer l’annulation du voyage ?')">
+        <button type="submit" class="btn cancel-btn">Annuler</button>
+      </form>
+    <% } else { %>
+      <form action="/api/trips/<%= trip.id %>/rerun?_method=PATCH" method="POST" onsubmit="return confirm('Confirmer la relance du voyage ?')">
+        <button type="submit" class="btn rerun-btn">Relancer</button>
+      </form>
+    <% } %>
+
+    <button class="btn edit-btn" onclick="window.location.href='/api/trips/<%= trip.id %>/edit'">Edit</button>
+    <button class="btn delete-btn" onclick="handleDelete(<%= trip.id %>)">Delete</button>
+  <% } %>
+</div>
+
+
+<style>
+
+form{
+  display: inline;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+</style>

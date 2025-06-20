@@ -1,0 +1,59 @@
+<%- include('partials/header') %>
+  <h1>Validation du document</h1>
+
+  <% if (document && user) { %>
+    <div class="doc-info">
+      <p><strong>Utilisateur :</strong> <%= user.firstname %> <%= user.lastname %> (<%= user.email %>)</p>
+      <p><strong>Type de document :</strong> <%= document.type %></p>
+      <p><strong>Date de soumission :</strong> <%= new Date(document.createdAt).toLocaleString() %></p>
+      <p><strong>Statut :</strong>
+        <% if (document.isValidate) { %>
+           Document déjà validé
+        <% } else { %>
+           En attente de validation
+        <% } %>
+      </p>
+
+      <p><strong>Document :</strong>
+        <% if (document.filename) { %>
+          <a href="<%= document.filename %>" target="_blank">Voir le document</a>
+        <% } else { %>
+          Non disponible
+        <% } %>
+      </p>
+
+      <% if (!document.isValidate) { %>
+        <form action="/api/documents/validate/<%= document.id %>" method="POST">
+          <button id="validateButton" type="submit">Valider ce document</button>
+        </form>
+
+      <% } %>
+    </div>
+  <% } else { %>
+    <p>Document introuvable.</p>
+  <% } %>
+
+  <a href="/api/documents/users">← Retour à la liste des documents</a>
+
+
+    <style>
+          form{
+        display: inline;
+        
+        margin: 0;
+        padding: 0;
+        border: none;
+    }
+
+    #validateButton{
+        background-color: rgb(75, 163, 75);
+        width: 10%;
+        border-radius: 5px;
+        margin: 1%;
+    }
+        #validateButton:hover{
+        background-color: rgb(55, 184, 55);
+        width: 10%;
+        border-radius: 5px;
+    }
+    </style>

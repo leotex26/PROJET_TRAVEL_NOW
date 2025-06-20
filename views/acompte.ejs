@@ -1,0 +1,77 @@
+
+<%- include('partials/header') %>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      
+      background-color: #f8f9fa;
+    }
+    .payment-container {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      padding: 2rem;
+      max-width: 600px;
+      margin: auto;
+    }
+    h1 {
+      color: #333;
+    }
+    .info {
+      margin: 1rem 0;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+  </style>
+
+  <div class="payment-container">
+    <h1>Paiement de l'acompte</h1>
+
+    <div class="info">
+      <p><strong>Voyage :</strong> <%= reservation.Trip ? reservation.Trip.lieux : "Voyage inconnu" %></p>
+      <p><strong>Dates :</strong>
+        <% if (reservation.Trip) { %>
+          du <%= new Date(reservation.Trip.dateDeb).toLocaleDateString() %>
+          au <%= new Date(reservation.Trip.dateFin).toLocaleDateString() %>
+        <% } else { %>
+          Non disponible
+        <% } %>
+      </p>
+        <p><strong>Montant total :</strong> <span id="completeAmount"><%= reservation.prix ? reservation.prix.toFixed(2) : "NC" %></span> €</p>
+
+        <p><strong>Acompte demandé (20%) :</strong> <span id="amountAcompt"></span> €</p>
+        </div>
+
+    <form action="/api/payments/<%= reservation.id %>" method="POST">
+
+        <label id="amountAcompt" value=""></label>
+        
+      <button type="submit">Payer l'acompte</button>
+    </form>
+  </div>
+
+
+<script>
+  const amountAcompt = document.getElementById('amountAcompt');
+  const completeAmountEl = document.getElementById('completeAmount');
+
+  const completeValue = parseFloat(completeAmountEl.innerText);
+
+  if (!isNaN(completeValue)) {
+    const acompte = (completeValue * 0.2).toFixed(2);
+    amountAcompt.innerText = acompte;
+  } else {
+    amountAcompt.innerText = "Montant inconnu";
+  }
+</script>

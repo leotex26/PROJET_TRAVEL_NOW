@@ -1,0 +1,98 @@
+<%- include('../partials/header') %>
+
+
+<h1><%= titre %></h1>
+<p><strong>Lieu :</strong> <%= trip.lieux %></p>
+<p><strong>Dates :</strong> du <%= trip.dateDeb.toLocaleDateString() %> au <%= trip.dateFin.toLocaleDateString() %></p>
+<p><strong>Places disponibles :</strong> <%= trip.nb_de_places %></p>
+<p><strong>Documents requis :</strong></p>
+<ul>
+  <% trip.type_doc_requis.forEach(doc => { %>
+    <li><%= doc %></li>
+  <% }) %>
+</ul>
+
+<% if(user) { %>
+<button id="btn-register">S'inscrire</button>
+  <script>
+    document.getElementById('btn-register').addEventListener('click', async () => {
+      try {
+        const response = await fetch('/api/registrations/<%= trip.id %>', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          alert(data.message || 'Erreur lors de l’inscription');
+        } else {
+          alert(data.message || 'Inscription réussie');
+          window.location.reload(); 
+        }
+
+      } catch (error) {
+        alert('Erreur réseau ou serveur.');
+        console.error(error);
+      }
+    });
+  </script>
+<% } %>
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f4f8;
+    color: #333;
+    margin: 0;
+    
+  }
+
+  h1 {
+    color: #0077b6;
+    margin-bottom: 20px;
+  }
+
+  p {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+  }
+
+  strong {
+    color: #023e8a;
+  }
+
+  ul {
+    padding-left: 20px;
+    margin-bottom: 20px;
+  }
+
+  ul li {
+    margin-bottom: 5px;
+    list-style: disc;
+  }
+
+  form {
+    margin-top: 20px;
+  }
+
+  button[type="submit"] {
+    background-color: #00b4d8;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  button[type="submit"]:hover {
+    background-color: #0096c7;
+  }
+</style>
+
+
+<%- include('../partials/footer') %>

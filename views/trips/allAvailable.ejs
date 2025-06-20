@@ -1,0 +1,124 @@
+<h1><%= titreA %></h1>
+<div id="tripContainer">
+  <% trips.filter(trip => trip.statut === 'DISPONIBLE').forEach(trip => { %>
+    <%- include('../partials/tripCard', { trip, isAdmin }) %>
+  <% }) %>
+</div>
+
+
+<h1><%= titreB %></h1>
+<div id="tripContainer">
+  <% trips.filter(trip => trip.statut !== 'DISPONIBLE').forEach(trip => { %>
+    <%- include('../partials/tripCard', { trip, isAdmin }) %>
+  <% }) %>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+
+
+  function handleDelete(id) {
+    if (confirm("Voulez-vous vraiment supprimer ce voyage ?")) {
+      fetch(`/api/trips/${id}`, {
+        method: 'DELETE'
+      })
+      .then(response => {
+        if (response.ok) {
+          alert("Voyage supprimé avec succès.");
+          location.reload(); 
+        } else {
+          alert("Erreur lors de la suppression.");
+        }
+      })
+      .catch(error => {
+        console.error("Erreur :", error);
+        alert("Erreur réseau.");
+      });
+    }
+  }
+</script>
+
+<style>
+
+  body{
+    height: 100%;
+  }
+
+
+  #tripContainer {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 20px; 
+    padding: 20px;
+    overflow-y: auto; 
+    max-height: 100vh;
+  }
+
+  #invisibleForm{
+  display: inline;
+  margin: 0;
+  padding: 0;
+  border: none;
+  }
+
+  .trip-card {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    margin-right: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+  }
+
+  
+
+  .edit-btn {
+    background-color: #66a069;
+    color: white;
+  }
+
+    .cancel-btn {
+    background-color: #5c665c;
+    color: white;
+  }
+      .rerun-btn {
+    background-color: #513dc4;
+    color: white;
+  }
+
+  .edit-btn:hover {
+    background-color: #66a069;
+    transform: scale(1.01);
+  }
+
+  .delete-btn {
+    background-color: #cf6646;
+    color: white;
+  }
+
+  .delete-btn:hover {
+    background-color: #cf6646;
+    transform: scale(1.01);
+  }
+</style>
