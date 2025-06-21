@@ -2,6 +2,9 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db'); 
 const { type } = require('os');
 
+/**
+ * Modèle de voyage
+ */
 const Trip = sequelize.define('Trip', {
   lieux: {
     type: DataTypes.STRING,

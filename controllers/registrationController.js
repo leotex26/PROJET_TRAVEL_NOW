@@ -99,6 +99,8 @@ exports.deleteRegistrationToATrip = async (req, res) => {
     const user = req.user; 
     const tripId = req.params.tripId;
 
+    console.log('deleteRegistrationToATrip');
+
     // verif user auth
     if (!user) {
       return res.status(401).json({ message: 'Utilisateur non authentifié.' });
@@ -113,7 +115,7 @@ exports.deleteRegistrationToATrip = async (req, res) => {
 
     const registration = await Registration.findOne({
       where: {
-        id_membre: user.id,
+        userId: user.id,
         id_trip: trip.id
       }
     });
@@ -123,6 +125,10 @@ exports.deleteRegistrationToATrip = async (req, res) => {
     }
 
     await registration.destroy();
+
+    // plus secur que ++
+    await Trip.increment('nb_de_places', { by: 1, where: { id: trip.id } });
+
 
     return res.status(200).json({ message: 'Réservation annulée avec succès.' });
 

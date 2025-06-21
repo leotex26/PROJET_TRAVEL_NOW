@@ -1,11 +1,22 @@
+const Reservation = require('../models/Reservation');
 const Trip = require('../models/Trip');
 const tripService = require('../services/tripService')
 
+/**
+ * Affiche tous les voyages
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.getAllTrips = async (req, res) => {
   const trips = await Trip.findAll();
   res.render('trips/index', { trips });
 };
 
+/**
+ * Affiche tous les voyages disponibles sur la page d'accueil
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.getAllTripsAvailable = async (req, res) => {
   try {
     const availableTrips = await Trip.findAll({
@@ -19,24 +30,48 @@ exports.getAllTripsAvailable = async (req, res) => {
   }
 };
 
+/**
+ * Affiche les détails d'un voyage
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.getTripDetails = async (req, res) => {
   try {
     const trip = await Trip.findByPk(req.params.id);
-    const user = req.user; 
+    const user = req.user;
 
-    res.render('trips/tripDetails',{ trip: trip,
-      titre : 'Details du voyage',
-      user: user
-     }); 
+    let alreadyRegistered = false;
+
+    const reservations = await Reservation.findAll();
+
+    const reservationsA = reservations.filter(
+      (resa) => resa.userId === user.id && resa.id_trip === trip.id
+    );
+
+    alreadyRegistered = reservationsA.length > 0;
+
+    res.render('trips/tripDetails', {
+      trip: trip,
+      titre: trip.titre,
+      user: user,
+      alreadyRegistered
+    });
   } catch (err) {
     console.error('Erreur lors de la récupération du voyage :', err);
     res.status(500).send('Erreur serveur');
   }
 };
 
+
+
+/**
+ * Affiche le formulaire de création d'un voyage
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.getTripForm = (req, res) => {
   try {
-    console.log('getTripForm démarre');
+    //console.log('getTripForm démarre');
 
     const trip = Trip.build(); // Crée une instance vide du modèle Trip
 
@@ -50,7 +85,9 @@ exports.getTripForm = (req, res) => {
   }
 };
 
-
+/**
+ * Créer un voyage
+ */
 exports.createTrip = async (req, res) => {
   try {
     const data = req.body;
@@ -62,7 +99,7 @@ exports.createTrip = async (req, res) => {
 
     data.statut = 'DISPONIBLE';
 
-    console.log('Création trip avec:', data);
+    //console.log('Création trip avec:', data);
 
     await Trip.create(data);
     res.redirect('/');
@@ -72,7 +109,12 @@ exports.createTrip = async (req, res) => {
   }
 };
 
-
+/**
+ * Affiche le formulaire de modification d'un voyage
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 exports.editTripForm = async (req, res) => {
   const trip = await Trip.findByPk(req.params.id);
   if (!trip) return res.status(404).send('Voyage non trouvé');
@@ -81,7 +123,12 @@ exports.editTripForm = async (req, res) => {
   });
 };
 
-
+/**
+ * Modifier un voyage
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 exports.updateTrip = async (req, res) => {
   const trip = await Trip.findByPk(req.params.id);
   if (!trip) return res.status(404).send('Voyage non trouvé');
@@ -89,6 +136,12 @@ exports.updateTrip = async (req, res) => {
   res.redirect('/');
 };
 
+/**
+ * Supprimer un voyage
+ * @param {} req 
+ * @param {*} res 
+ * @returns 
+ */
 exports.deleteTrip = async (req, res) => {
   const trip = await Trip.findByPk(req.params.id);
   if (!trip) return res.status(404).send('Voyage non trouvé');
@@ -96,7 +149,12 @@ exports.deleteTrip = async (req, res) => {
   res.status(200).json({ message: 'Voyage supprimé' });
 };
 
-
+/**
+ * Ajouter un document requis à un voyage
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 exports.addRequiredDocument = async (req, res) => {
   try {
     const trip = await Trip.findByPk(req.params.id);
@@ -135,7 +193,12 @@ exports.addRequiredDocument = async (req, res) => {
   }
 };
 
-
+/**
+ * Annuler un voyage
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 exports.cancelTripController = async (req, res) => {
   try {
     const trip = await Trip.findByPk(req.params.id); 
@@ -153,7 +216,12 @@ exports.cancelTripController = async (req, res) => {
   }
 };
 
-
+/**
+ * Relancer un voyage
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 exports.rerunTripController = async (req, res) => {
 try{
   const trip = await Trip.findByPk(req.params.id); 
@@ -171,7 +239,12 @@ try{
 }
 };
 
-
+/**
+ * Mettre à jour le statut des voyages
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 exports.updateStatusTrip  = async (req, res) => {
 
 await tripService.updateTripsStatut();

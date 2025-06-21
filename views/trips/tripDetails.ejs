@@ -12,9 +12,13 @@
   <% }) %>
 </ul>
 
-<% if(user) { %>
-<button id="btn-register">S'inscrire</button>
-  <script>
+
+<% if (user && trip.statut === 'DISPONIBLE') { %>
+  <% if (!alreadyRegistered) { %>
+    <button id="btn-register">S'inscrire</button>
+
+    <script>
+
     document.getElementById('btn-register').addEventListener('click', async () => {
       try {
         const response = await fetch('/api/registrations/<%= trip.id %>', {
@@ -39,6 +43,30 @@
       }
     });
   </script>
+  <% } else { %>
+    <button id="btn-unregister">Se désinscrire</button>
+
+    <script>document.getElementById('btn-unregister')?.addEventListener('click', async () => {
+  if (!confirm("Es-tu sûr de vouloir annuler ton inscription ?")) return;
+
+  try {
+    const response = await fetch('/api/registrations/<%= trip.id %>', {
+      method: 'DELETE',
+    });
+
+    const data = await response.json();
+
+    alert(data.message || 'Réponse reçue');
+    if (response.ok) window.location.reload();
+
+  } catch (error) {
+    alert('Erreur réseau ou serveur.');
+  }
+});
+</script>
+  <% } %>
+
+  
 <% } %>
 
 <style>

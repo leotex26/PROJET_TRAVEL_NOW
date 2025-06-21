@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const documentController = require('../controllers/documentController');
 const tripController = require('../controllers/tripController');
-const auth = require('../middlewares/auth');
 const isAuthenticated = require('../middlewares/isAuthenticated');
 const upload = require('../middlewares/upload'); 
 const isAdmin = require('../middlewares/requireAdmin'); 

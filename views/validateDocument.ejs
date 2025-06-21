@@ -16,7 +16,7 @@
 
       <p><strong>Document :</strong>
         <% if (document.filename) { %>
-          <a href="<%= document.filename %>" target="_blank">Voir le document</a>
+          <a href="/uploads/<%= document.filename %>" target="_blank">Voir le document</a>
         <% } else { %>
           Non disponible
         <% } %>
@@ -45,15 +45,19 @@
         border: none;
     }
 
-    #validateButton{
-        background-color: rgb(75, 163, 75);
-        width: 10%;
-        border-radius: 5px;
-        margin: 1%;
-    }
-        #validateButton:hover{
-        background-color: rgb(55, 184, 55);
-        width: 10%;
-        border-radius: 5px;
-    }
+  button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    max-width: 10%;
+    padding: 0.4rem 0.8rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin-bottom: 2%;
+  }
+
+  button:hover {
+    background-color: #218838;
+  }
     </style>

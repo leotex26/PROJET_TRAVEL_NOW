@@ -1,5 +1,9 @@
 const Trip = require('../models/Trip');
 
+/**
+ * Récupère tous les voyages disponibles
+ * @returns 
+ */
 exports.fetchAvailableTrips = async () => {
   return await Trip.findAll({
     //where: { statut: 'DISPONIBLE' },
@@ -7,6 +11,11 @@ exports.fetchAvailableTrips = async () => {
   });
 };
 
+/**
+ * annuler un voyage
+ * @param {} trip 
+ * @returns 
+ */
 exports.cancelTripStatus = async (trip) => {
   
   if (trip.statut === 'ANNULÉ') {
@@ -22,7 +31,11 @@ exports.cancelTripStatus = async (trip) => {
   return 'Le voyage a été annulé avec succès.';
 };
 
-
+/**
+ * relancer un voyage
+ * @param {} trip 
+ * @returns 
+ */
 exports.rerunTripStatus = async (trip) => {
   if (trip.statut !== 'ANNULÉ') {
     throw new Error('Le voyage n\'est pas annulé.');
@@ -44,7 +57,10 @@ exports.rerunTripStatus = async (trip) => {
   return `Le voyage a été réactivé avec le statut : ${trip.statut}`;
 };
 
-
+/**
+ * mettre à jour le statut des voyages
+ * @returns 
+ */
 exports.updateTripsStatut  = async() => {
   const today = new Date();
 

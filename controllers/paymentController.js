@@ -5,7 +5,12 @@ const Trip = require('../models/Trip');
 const User = require('../models/User');
 
 
-
+/**
+ * Affiche la page de paiement
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 exports.simulatePaymentPage = async (req, res) => {
   try {
     const user = req.user;
@@ -41,7 +46,7 @@ exports.simulatePaymentPage = async (req, res) => {
 
 
 
-
+  
 // POST /api/payments/:registrationId
 exports.simulatePayment = async (req, res) => {
   const user = req.user;
