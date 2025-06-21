@@ -18,6 +18,8 @@ const cron = require('node-cron');
 const tripService = require('./services/tripService')
 const uploadsDir = path.join(__dirname, 'public', 'uploads');
 const fs = require('fs');
+const session = require('express-session');
+const flash = require('connect-flash');
 
 
 
@@ -36,6 +38,19 @@ fs.mkdirSync(uploadsDir, { recursive: true });
 
 
 // MIDDLEWARES
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false }
+}));
+app.use(flash());
+app.use((req, res, next) => {
+  res.locals.success_msg = req.flash('success_msg');
+  res.locals.error_msg = req.flash('error_msg');
+  next();
+});
+
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));

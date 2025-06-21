@@ -52,7 +52,8 @@ const nbDeJours = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     prix : 97*nbDeJours,
     userId: user.id, 
     id_trip: trip.id, 
-    status: 'réservé'
+    status: 'réservé',
+    documents_ok : true,
   });
 
   if(trip.nb_de_places <= 0){

@@ -6,6 +6,7 @@ const Registration = require('../models/Reservation');
 const { checkUserDocuments } = require('../services/documentService');
 const registrationService = require('../services/registrationService');
 
+
 /**
  * enregistre l'utilisateur courant authentifié dans une reservation pour un voyage
  * @param {*} req 
@@ -27,8 +28,23 @@ exports.registrationToATrip = async (req, res) => {
       return res.status(404).json({ message: 'Voyage non trouvé.' });
     }
 
-    // Appel du service centralisé
+    // verifie si l'utilisateur a tous les documents requis
+    const documents = await checkUserDocuments(user.id, trip.type_doc_requis);
+
+    if (!documents.isValid) {
+      return res.status(400).json({
+        message: 'Documents manquants ou expirés.',
+        manquants: documents.missingTypes,
+        expirés: documents.expiredTypes
+      });
+    }
+
+    
+
+
     const registration = await registrationService.addInscriptionToTrip(user, trip);
+
+    
 
     return res.status(201).json({
       message: 'Inscription réussie.',
@@ -51,6 +67,7 @@ exports.registrationToATrip = async (req, res) => {
     return res.status(400).json({ message: err.message || 'Erreur lors de l’inscription.' });
   }
 };
+
 
 /**
  * Récupère les inscriptions (registrations) de l'utilisateur connecté

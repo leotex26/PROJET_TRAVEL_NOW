@@ -53,25 +53,28 @@
         <p><strong>Acompte demandé (20%) :</strong> <span id="amountAcompt"></span> €</p>
         </div>
 
-    <form action="/api/payments/<%= reservation.id %>" method="POST">
-
-        <label id="amountAcompt" value=""></label>
+        <form action="/api/payments/<%= reservation.id %>" method="POST">
+          <input type="hidden" name="amount" id="amountInput">
+          <input type="hidden" name="status" value="acompte">
         
-      <button type="submit">Payer l'acompte</button>
-    </form>
+          <button type="submit">Payer l'acompte</button>
+        </form>
   </div>
 
 
-<script>
-  const amountAcompt = document.getElementById('amountAcompt');
-  const completeAmountEl = document.getElementById('completeAmount');
-
-  const completeValue = parseFloat(completeAmountEl.innerText);
-
-  if (!isNaN(completeValue)) {
-    const acompte = (completeValue * 0.2).toFixed(2);
-    amountAcompt.innerText = acompte;
-  } else {
-    amountAcompt.innerText = "Montant inconnu";
-  }
-</script>
+  <script>
+    const amountAcompt = document.getElementById('amountAcompt');
+    const completeAmountEl = document.getElementById('completeAmount');
+    const amountInput = document.getElementById('amountInput');
+  
+    const completeValue = parseFloat(completeAmountEl.innerText);
+  
+    if (!isNaN(completeValue)) {
+      const acompte = (completeValue * 0.2).toFixed(2);
+      amountAcompt.innerText = acompte;
+      amountInput.value = acompte;
+    } else {
+      amountAcompt.innerText = "Montant inconnu";
+      amountInput.value = "";
+    }
+  </script>

@@ -111,14 +111,19 @@ exports.getProfile = async (req, res) => {
 };
 
 
-
+/**
+ * updateProfile permet de mettre à jour les informations de l'utilisateur
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 exports.updateProfile = async (req, res) => {
-  console.log('updateProfile');
+  
   try {
     const user = req.user;
 
     if (!user) {
-      return res.status(404).render('error', { message: 'Utilisateur non reconnu' });
+      return req.status(404).render('error', { message: 'Utilisateur non reconnu' });
     }
 
     // Mise à jour des champs
@@ -126,7 +131,7 @@ exports.updateProfile = async (req, res) => {
     user.email = req.body.email;
     await user.save();
 
-
+    req.flash('success_msg', 'Profil mis à jour avec succès');
     return res.redirect('/api/profile');
 
   } catch (error) {
