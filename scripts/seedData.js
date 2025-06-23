@@ -50,15 +50,31 @@ async function seedDatabase() {
         lieux: 'Prague',
         dateDeb: new Date('2025-09-01'),
         dateFin: new Date('2025-09-15'),
-        nb_de_places: 15,
+        nb_de_places: 18,
         statut: 'DISPONIBLE',
         type_doc_requis: ["passeport"]
       }),
-            Trip.create({
+      Trip.create({
         lieux: 'Londres',
         dateDeb: new Date('2025-06-21'),
         dateFin: new Date('2025-07-15'),
-        nb_de_places: 15,
+        nb_de_places: 12,
+        statut: 'ANNULÉ',
+        type_doc_requis: ["identité"]
+      }),
+      Trip.create({
+        lieux: 'Berlin',
+        dateDeb: new Date('2025-09-21'),
+        dateFin: new Date('2025-09-15'),
+        nb_de_places: 16,
+        statut: 'ANNULÉ',
+        type_doc_requis: ["identité"]
+      }),
+      Trip.create({
+        lieux: 'New-york',
+        dateDeb: new Date('2026-06-21'),
+        dateFin: new Date('2026-07-15'),
+        nb_de_places: 21,
         statut: 'ANNULÉ',
         type_doc_requis: ["visa"]
       })

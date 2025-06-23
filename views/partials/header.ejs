@@ -17,6 +17,7 @@
     }
     header {
       display: flex;
+      justify-content: space-between;
       background-color: #007bff;
       color: white;
       padding: 1rem;
@@ -75,6 +76,7 @@
   <% if (isAdmin) { %>
     <a href="/api/trips/form">créer un voyage</a>
     <a href="/api/documents/users">Membres</a>
+    <a href="/admin/dashboard">Dashboard</a>
   <% } %>
 <% } else { %>
   <a href="/api/auth/login">Se connecter</a>

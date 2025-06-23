@@ -31,24 +31,29 @@ exports.getAllTripsAvailable = async (req, res) => {
 };
 
 /**
- * Affiche les détails d'un voyage
+ * Affiche les détails d'un voyage ( public )
  * @param {*} req 
  * @param {*} res 
  */
 exports.getTripDetails = async (req, res) => {
   try {
+  console.log("getTripDetails");
     const trip = await Trip.findByPk(req.params.id);
     const user = req.user;
 
     let alreadyRegistered = false;
 
-    const reservations = await Reservation.findAll();
+    
+    if(user){
+      const reservations = await Reservation.findAll();
 
-    const reservationsA = reservations.filter(
-      (resa) => resa.userId === user.id && resa.id_trip === trip.id
-    );
+      const reservationsA = reservations.filter(
+        (resa) => resa.userId === user.id && resa.id_trip === trip.id
+      );
+  
+      alreadyRegistered = reservationsA.length > 0;
+    }
 
-    alreadyRegistered = reservationsA.length > 0;
 
     res.render('trips/tripDetails', {
       trip: trip,

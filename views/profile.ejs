@@ -7,7 +7,8 @@
 
 <form action="/api/profile" method="POST">
 
-  <% if (typeof success_msg !== 'undefined' && success_msg) { %>
+  <% if (typeof success_msg === 'undefined' || success_msg.length === 0) { %>
+  <% } else if (typeof success_msg !== 'undefined' && success_msg) { %>
     <div class="alert alert-success"><%= success_msg %></div>
   <% } else if (typeof error_msg !== 'undefined' && error_msg) { %>
     <div class="alert alert-danger"><%= error_msg %></div>

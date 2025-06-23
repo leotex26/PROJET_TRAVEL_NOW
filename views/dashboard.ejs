@@ -1,0 +1,43 @@
+<%- include('partials/header') %>
+
+<h1>Tableau de bord admin</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Voyage</th>
+      <th>Dates</th>
+      <th>Inscrits</th>
+      
+    </tr>
+  </thead>
+  <tbody>
+    <% stats.forEach(s => { %>
+      <tr>
+        <td><%= s.lieux %></td>
+        <td><%= s.dates %></td>
+        <td><%= s.inscrits %></td>
+        
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
+
+<style>
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 2rem;
+  }
+
+  th, td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: center;
+  }
+
+  th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+  }
+</style>
