@@ -78,7 +78,7 @@ exports.getTripForm = (req, res) => {
   try {
     //console.log('getTripForm démarre');
 
-    const trip = Trip.build(); // Crée une instance vide du modèle Trip
+    const trip = Trip.build(); 
 
     res.render('trips/new', {
       trip,
@@ -97,7 +97,7 @@ exports.createTrip = async (req, res) => {
   try {
     const data = req.body;
 
-    // Normalise type_doc_requis pour qu'il soit toujours un tableau
+    
     if (!Array.isArray(data.type_doc_requis)) {
       data.type_doc_requis = [data.type_doc_requis];
     }
