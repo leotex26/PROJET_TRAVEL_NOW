@@ -1,126 +1,110 @@
 <%- include('../partials/header') %>
+<div class="relative group max-w-4xl mx-auto px-6 py-10 min-h-screen">
+  <div class="relative bg-white shadow-inner rounded-xl p-8 border border-amber-400/60 backdrop-blur-md bg-white/80 overflow-hidden z-10">
+    <!-- Titre + icône transport -->
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-4xl font-extrabold text-gray-900">
+        <%= titre %>
+      </h1>
+
+      <% if (trip.moyens_transport === 'AVION') { %>
+        <i class="fas fa-plane text-blue-500 text-3xl ml-4" title="Avion"></i>
+      <% } %>
+      <% if (trip.moyens_transport === 'TRAIN') { %>
+        <i class="fas fa-train text-green-500 text-3xl ml-4" title="Train"></i>
+      <% } %>
+      <% if (trip.moyens_transport === 'CAR') { %>
+        <i class="fas fa-bus text-yellow-500 text-3xl ml-4" title="Car"></i>
+      <% } %>
+      <% if (trip.moyens_transport === 'BATEAU') { %>
+        <i class="fas fa-ship text-indigo-500 text-3xl ml-4" title="Bateau"></i>
+      <% } %>
+    </div>
+
+   
+    <div class="flex items-start gap-6 mt-4">
+      <!-- Image  -->
+      <img src="/<%= trip.img_path %>" alt="Image de <%= trip.lieux %>"
+        class="w-40 h-40 object-cover rounded-lg shadow-md flex-shrink-0" />
+    
+      <!-- Infos -->
+      <div class="space-y-4 text-gray-800 text-lg">
+        <p><strong class="text-gray-600">Lieu :</strong> <%= trip.lieux %></p>
+        <p><strong class="text-gray-600">Dates :</strong> du <%= trip.dateDeb.toLocaleDateString() %> au <%= trip.dateFin.toLocaleDateString() %></p>
+        <p><strong class="text-gray-600">Places disponibles :</strong> <%= trip.nb_de_places %></p>
+    
+        <div>
+          <p class="font-semibold text-gray-700 mb-1">Documents requis :</p>
+          <ul class="list-disc list-inside text-gray-600 ml-2">
+            <% trip.type_doc_requis.forEach(doc => { %>
+              <li><%= doc %></li>
+            <% }) %>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <% if (user && trip.statut === 'DISPONIBLE') { %>
+      <div class="mt-8">
+        <% if (!alreadyRegistered) { %>
+          <button id="btn-register" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-6 py-3 rounded-lg shadow-md transition-all duration-200">
+            S'inscrire
+          </button>
+        <% } else { %>
+          <button id="btn-unregister" class="bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-3 rounded-lg shadow-md transition-all duration-200">
+            Se désinscrire
+          </button>
+        <% } %>
+      </div>
+    <% } %>
+  </div>
+</div>
 
 
-<h1><%= titre %></h1>
-<p><strong>Lieu :</strong> <%= trip.lieux %></p>
-<p><strong>Dates :</strong> du <%= trip.dateDeb.toLocaleDateString() %> au <%= trip.dateFin.toLocaleDateString() %></p>
-<p><strong>Places disponibles :</strong> <%= trip.nb_de_places %></p>
-<p><strong>Documents requis :</strong></p>
-<ul>
-  <% trip.type_doc_requis.forEach(doc => { %>
-    <li><%= doc %></li>
-  <% }) %>
-</ul>
+<script>
+  document.getElementById('btn-register')?.addEventListener('click', async () => {
+    try {
+      const response = await fetch('/api/registrations/<%= trip.id %>', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      const data = await response.json();
+      alert(data.message || (response.ok ? 'Inscription réussie' : 'Erreur lors de l’inscription'));
+      if (response.ok) window.location.reload();
+    } catch (error) {
+      alert('Erreur réseau ou serveur.');
+      console.error(error);
+    }
+  });
+
+  document.getElementById('btn-unregister')?.addEventListener('click', async () => {
+    if (!confirm("Es-tu sûr de vouloir annuler ton inscription ?")) return;
+    try {
+      const response = await fetch('/api/registrations/<%= trip.id %>', { method: 'DELETE' });
+      const data = await response.json();
+      alert(data.message || 'Réponse reçue');
+      if (response.ok) window.location.reload();
+    } catch (error) {
+      alert('Erreur réseau ou serveur.');
+    }
+  });
 
 
-<% if (user && trip.statut === 'DISPONIBLE') { %>
-  <% if (!alreadyRegistered) { %>
-    <button id="btn-register">S'inscrire</button>
 
-    <script>
 
-    document.getElementById('btn-register').addEventListener('click', async () => {
-      try {
-        const response = await fetch('/api/registrations/<%= trip.id %>', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          alert(data.message || 'Erreur lors de l’inscription');
-        } else {
-          alert(data.message || 'Inscription réussie');
-          window.location.reload(); 
-        }
-
-      } catch (error) {
-        alert('Erreur réseau ou serveur.');
-        console.error(error);
-      }
-    });
-  </script>
-  <% } else { %>
-    <button id="btn-unregister">Se désinscrire</button>
-
-    <script>document.getElementById('btn-unregister')?.addEventListener('click', async () => {
-  if (!confirm("Es-tu sûr de vouloir annuler ton inscription ?")) return;
-
-  try {
-    const response = await fetch('/api/registrations/<%= trip.id %>', {
-      method: 'DELETE',
-    });
-
-    const data = await response.json();
-
-    alert(data.message || 'Réponse reçue');
-    if (response.ok) window.location.reload();
-
-  } catch (error) {
-    alert('Erreur réseau ou serveur.');
+// fond img
+  document.addEventListener('DOMContentLoaded', () => {
+  const body = document.querySelector('body');
+  if (body) {
+    body.style.backgroundImage = "url('/images/fond_details.jpg')";
+    body.style.backgroundSize = 'cover';
+    body.style.backgroundPosition = 'center';
+    body.style.backgroundRepeat = 'no-repeat';
   }
 });
+
+
+
 </script>
-  <% } %>
-
-  
-<% } %>
-
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f4f8;
-    color: #333;
-    margin: 0;
-    
-  }
-
-  h1 {
-    color: #0077b6;
-    margin-bottom: 20px;
-  }
-
-  p {
-    font-size: 1.1rem;
-    margin-bottom: 10px;
-  }
-
-  strong {
-    color: #023e8a;
-  }
-
-  ul {
-    padding-left: 20px;
-    margin-bottom: 20px;
-  }
-
-  ul li {
-    margin-bottom: 5px;
-    list-style: disc;
-  }
-
-  form {
-    margin-top: 20px;
-  }
-
-  button[type="submit"] {
-    background-color: #00b4d8;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 1rem;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-
-  button[type="submit"]:hover {
-    background-color: #0096c7;
-  }
-</style>
-
 
 <%- include('../partials/footer') %>

@@ -1,5 +1,66 @@
 <%- include('partials/header') %>
 
-<%- include('trips/allAvailable') %>
+<section class="relative h-[90vh] bg-cover bg-center" style="background-image: url('/images/beach_header.jpg');">
+  <div class="absolute inset-0 bg-black/50 flex flex-col items-center justify-center text-center text-white px-4">
+    <h1 class="text-4xl md:text-5xl font-bold mb-4 drop-shadow-lg">
+      Explore le monde avec TravelNow
+    </h1>
+    <p class="text-lg md:text-xl mb-6 drop-shadow-sm">
+      Réservez des expériences inoubliables facilement
+    </p>
+    <a id="discoverBtn" class="bg-amber-500 hover:bg-amber-600 text-white px-6 py-3 rounded-lg shadow-lg transition">
+      Découvrir les voyages
+    </a>
+  </div>
+</section>
 
 
+
+
+<div id="voyages" class="max-w-7xl mx-auto px-4 py-8">
+  <div class="bg-gray-300 h-[1vh] w-[50vw] mx-auto" ></div>
+  <div class="bg-white h-[5vh]  mx-auto" ></div>
+  
+  <%- include('trips/allAvailable') %>
+</div>
+
+<%- include('partials/footer') %>
+
+<style>
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @keyframes slideUpFade {
+    from {
+      transform: translateY(40px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .animate-slide-up {
+    animation: slideUpFade 0.6s ease-out forwards;
+  }
+</style>
+
+<script>
+  document.getElementById('discoverBtn').addEventListener('click', () => {
+    const target = document.getElementById('voyages');
+    const targetY = target.getBoundingClientRect().top + window.scrollY;
+
+    // Défilement fluide
+    window.scrollTo({
+      top: targetY,
+      behavior: 'smooth'
+    });
+
+    // Ajout de l'animation après un petit délai pour laisser le scroll démarrer
+    setTimeout(() => {
+      target.classList.add('animate-slide-up');
+    }, 300);
+  });
+</script>

@@ -1,161 +1,58 @@
 <%- include('partials/header') %>
 
- <% if (users && users.length > 0) { %>
-      <% users.forEach(user => { %>
-        <section class="user-section">
-          <h2><%= user.nom %> <%= user.prenom %> (<%= user.email %>)</h2>
-          
-          <% if (user.documents && user.documents.length > 0) { %>
-            <table>
-              <thead>
+<div class="max-w-6xl mx-auto px-4 mt-10">
+  <% if (users && users.length > 0) { %>
+    <% users.forEach(user => { %>
+      <section class="mb-10 border border-gray-200 p-6 rounded-lg shadow-md">
+        <h2 class="text-xl font-semibold mb-4 text-gray-800">
+          <%= user.nom %> <%= user.prenom %> (<%= user.email %>)
+        </h2>
+
+        <% if (user.documents && user.documents.length > 0) { %>
+          <div class="overflow-x-auto">
+            <table class="w-full table-auto border border-gray-200">
+              <thead class="bg-gray-100 text-gray-700 text-sm">
                 <tr>
-                  <th>Type de document</th>
-                  <th>Date d’expiration</th>
-                  <th>Statut</th>
-                  <th>Action</th>
+                  <th class="px-4 py-2 border-b">Type de document</th>
+                  <th class="px-4 py-2 border-b">Date d’expiration</th>
+                  <th class="px-4 py-2 border-b">Statut</th>
+                  <th class="px-4 py-2 border-b">Action</th>
                 </tr>
               </thead>
               <tbody>
                 <% user.documents.forEach(doc => { %>
-                  <tr>
-                    <td><%= doc.type %></td>
-                    <td><%= new Date(doc.date_expiration).toLocaleDateString() %></td>
-                    <td>
+                  <tr class="hover:bg-gray-50 text-sm">
+                    <td class="px-4 py-2 border-b"><%= doc.type %></td>
+                    <td class="px-4 py-2 border-b"><%= new Date(doc.date_expiration).toLocaleDateString() %></td>
+                    <td class="px-4 py-2 border-b">
                       <% if (doc.isValidate) { %>
-                         Validé
+                        <span class="text-green-600 font-medium">Validé</span>
                       <% } else { %>
-                         Non validé
+                        <span class="text-red-500 font-medium">Non validé</span>
                       <% } %>
                     </td>
-                    <td>
+                    <td class="px-4 py-2 border-b">
                       <% if (!doc.isValidate) { %>
                         <form action="/api/documents/validate/<%= doc.id %>" method="GET">
-                          <button type="submit">Valider</button>
+                          <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-md text-sm">Valider</button>
                         </form>
                       <% } else { %>
-                        -
+                        <span class="text-gray-400">—</span>
                       <% } %>
                     </td>
                   </tr>
                 <% }) %>
               </tbody>
             </table>
-          <% } else { %>
-            <p>Aucun document pour cet utilisateur.</p>
-          <% } %>
-        </section>
-      <% }) %>
-    <% } else { %>
-      <p>Aucun utilisateur trouvé.</p>
-    <% } %>
+          </div>
+        <% } else { %>
+          <p class="text-gray-600">Aucun document pour cet utilisateur.</p>
+        <% } %>
+      </section>
+    <% }) %>
+  <% } else { %>
+    <p class="text-center text-gray-600 mt-8">Aucun utilisateur trouvé.</p>
+  <% } %>
+</div>
 
 
-    <style>
-          form{
-        display: inline;
-        margin: 0;
-        padding: 0;
-        border: none;
-    }
-
-
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    
-    background-color: #f8f9fa;
-    color: #333;
-  }
-
-  .user-section {
-    background-color: #ffffff;
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-    border: 1px solid #dee2e6;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-  }
-
-  .user-section h2 {
-    margin-top: 0;
-    color: #007bff;
-    font-size: 1.3rem;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1rem;
-  }
-
-  th, td {
-    padding: 0.75rem;
-    text-align: left;
-    border-bottom: 1px solid #dee2e6;
-  }
-
-  th {
-    background-color: #f1f3f5;
-    font-weight: bold;
-  }
-
-  td {
-    background-color: #fff;
-  }
-
-  tr:hover td {
-    background-color: #f8f9fa;
-  }
-
-  button {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 0.4rem 0.8rem;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.9rem;
-  }
-
-  button:hover {
-    background-color: #218838;
-  }
-
-
-
-  p {
-    margin: 0.5rem 0;
-    color: #555;
-  }
-
-  @media (max-width: 768px) {
-    table, thead, tbody, th, td, tr {
-      display: block;
-    }
-
-    th {
-      display: none;
-    }
-
-    td {
-      position: relative;
-      padding-left: 50%;
-      border: none;
-      border-bottom: 1px solid #ddd;
-    }
-
-    td::before {
-      content: attr(data-label);
-      position: absolute;
-      left: 0;
-      top: 0;
-      padding: 0.75rem;
-      font-weight: bold;
-      color: #495057;
-      background-color: #f1f3f5;
-      width: 50%;
-      border-right: 1px solid #dee2e6;
-    }
-  }
-
-
-    </style>

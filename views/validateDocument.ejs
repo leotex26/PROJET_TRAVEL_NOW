@@ -1,63 +1,43 @@
 <%- include('partials/header') %>
-  <h1>Validation du document</h1>
+
+<div class="max-w-3xl mx-auto p-6">
+  <h1 class="text-3xl font-semibold mb-6">Validation du document</h1>
 
   <% if (document && user) { %>
-    <div class="doc-info">
-      <p><strong>Utilisateur :</strong> <%= user.firstname %> <%= user.lastname %> (<%= user.email %>)</p>
-      <p><strong>Type de document :</strong> <%= document.type %></p>
-      <p><strong>Date de soumission :</strong> <%= new Date(document.createdAt).toLocaleString() %></p>
+    <div class="bg-white shadow-md rounded-lg p-6 space-y-4 border border-gray-200">
+      <p><strong>Utilisateur :</strong> <span class="font-medium"><%= user.firstname %> <%= user.lastname %></span> (<%= user.email %>)</p>
+      <p><strong>Type de document :</strong> <span class="font-medium"><%= document.type %></span></p>
+      <p><strong>Date de soumission :</strong> <span class="font-medium"><%= new Date(document.createdAt).toLocaleString() %></span></p>
       <p><strong>Statut :</strong>
         <% if (document.isValidate) { %>
-           Document déjà validé
+          <span class="text-green-600 font-semibold">Document déjà validé</span>
         <% } else { %>
-           En attente de validation
+          <span class="text-yellow-600 font-semibold">En attente de validation</span>
         <% } %>
       </p>
 
       <p><strong>Document :</strong>
         <% if (document.filename) { %>
-          <a href="/uploads/<%= document.filename %>" target="_blank">Voir le document</a>
+          <a href="/uploads/<%= document.filename %>" target="_blank" class="text-blue-600 hover:underline">Voir le document</a>
         <% } else { %>
-          Non disponible
+          <span class="text-gray-500">Non disponible</span>
         <% } %>
       </p>
 
       <% if (!document.isValidate) { %>
-        <form action="/api/documents/validate/<%= document.id %>" method="POST">
-          <button id="validateButton" type="submit">Valider ce document</button>
+        <form action="/api/documents/validate/<%= document.id %>" method="POST" class="mt-4">
+          <button id="validateButton" type="submit" 
+                  class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded font-semibold transition-colors duration-200">
+            Valider ce document
+          </button>
         </form>
-
       <% } %>
     </div>
   <% } else { %>
-    <p>Document introuvable.</p>
+    <p class="text-red-600 font-semibold">Document introuvable.</p>
   <% } %>
 
-  <a href="/api/documents/users">← Retour à la liste des documents</a>
+  <a href="/api/documents/users" class="inline-block mt-6 text-blue-600 hover:underline">← Retour à la liste des documents</a>
+</div>
 
-
-    <style>
-          form{
-        display: inline;
-        
-        margin: 0;
-        padding: 0;
-        border: none;
-    }
-
-  button {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    max-width: 10%;
-    padding: 0.4rem 0.8rem;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    margin-bottom: 2%;
-  }
-
-  button:hover {
-    background-color: #218838;
-  }
-    </style>
+<%- include('partials/footer') %>

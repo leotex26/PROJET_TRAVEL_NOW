@@ -8,7 +8,5 @@ exports.validateTrip = [
     .isInt({ gt: 0 })
     .withMessage("Le nombre de places doit être supérieur à 0"),
 
-  //body('statut')
-  //  .isIn(['ANNULÉ', 'DISPONIBLE', 'COMPLET', 'EN_COURS', 'FINIT'])
-  //  .withMessage("Statut invalide"),
+
 ];

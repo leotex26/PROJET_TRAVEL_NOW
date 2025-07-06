@@ -1,43 +1,28 @@
 <%- include('partials/header') %>
 
-<h1>Tableau de bord admin</h1>
+<div class="max-w-5xl mx-auto mt-10 px-4">
+  <h1 class="text-2xl font-bold mb-6 text-gray-800">Tableau de bord admin</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Voyage</th>
-      <th>Dates</th>
-      <th>Inscrits</th>
-      
-    </tr>
-  </thead>
-  <tbody>
-    <% stats.forEach(s => { %>
-      <tr>
-        <td><%= s.lieux %></td>
-        <td><%= s.dates %></td>
-        <td><%= s.inscrits %></td>
-        
-      </tr>
-    <% }) %>
-  </tbody>
-</table>
+  <div class="overflow-x-auto">
+    <table class="w-full table-auto border border-gray-200 rounded-lg shadow-sm">
+      <thead class="bg-gray-100">
+        <tr class="text-left">
+          <th class="px-4 py-3 border-b font-semibold text-gray-700">Voyage</th>
+          <th class="px-4 py-3 border-b font-semibold text-gray-700">Dates</th>
+          <th class="px-4 py-3 border-b font-semibold text-gray-700">Inscrits</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% stats.forEach(s => { %>
+          <tr class="hover:bg-gray-50">
+            <td class="px-4 py-2 border-b"><%= s.lieux %></td>
+            <td class="px-4 py-2 border-b"><%= s.dates %></td>
+            <td class="px-4 py-2 border-b"><%= s.inscrits %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>
 
-<style>
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 2rem;
-  }
-
-  th, td {
-    padding: 12px;
-    border: 1px solid #ddd;
-    text-align: center;
-  }
-
-  th {
-    background-color: #f0f0f0;
-    font-weight: bold;
-  }
-</style>
+<%- include('/partials/footer') %>

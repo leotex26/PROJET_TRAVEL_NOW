@@ -1,99 +1,68 @@
 <%- include('partials/header') %>
 
+<div class="max-w-7xl mx-auto p-6">
+  <h1 class="text-3xl font-semibold mb-6">Mes Réservations</h1>
 
-<h1>Mes Réservations</h1>
+  <% if (registrations.length === 0) { %>
+    <p class="text-gray-700">Vous n’avez encore effectué aucune réservation.</p>
+  <% } else { %>
+    <div class="overflow-x-auto">
+      <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="text-left px-4 py-3 border-b border-gray-300">Voyage</th>
+            <th class="text-left px-4 py-3 border-b border-gray-300">Dates</th>
+            <th class="text-right px-4 py-3 border-b border-gray-300">Prix (€)</th>
+            <th class="text-left px-4 py-3 border-b border-gray-300">Statut</th>
+            <th class="text-left px-4 py-3 border-b border-gray-300">Documents</th>
+            <th class="text-left px-4 py-3 border-b border-gray-300">Dernière mise à jour</th>
+            <th class="text-left px-4 py-3 border-b border-gray-300">Statut acompte</th>
+            <th class="text-left px-4 py-3 border-b border-gray-300">Paiement acompte</th>
+            <th class="text-left px-4 py-3 border-b border-gray-300">Statut paiement</th>
+            <th class="text-left px-4 py-3 border-b border-gray-300">Paiement</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% registrations.forEach(res => { %>
+            <tr class="hover:bg-gray-50">
+              <td class="px-4 py-3 border-b border-gray-200"><%= res.Trip.lieux %></td>
+              <td class="px-4 py-3 border-b border-gray-200">
+                du <%= new Date(res.Trip.dateDeb).toLocaleDateString() %> 
+                au <%= new Date(res.Trip.dateFin).toLocaleDateString() %>
+              </td>
+              <td class="px-4 py-3 border-b border-gray-200 text-right"><%= res.prix.toFixed(2) %></td>
+              <td class="px-4 py-3 border-b border-gray-200"><%= res.statut %></td>
+              <td class="px-4 py-3 border-b border-gray-200">
+                <% if (res.documents_ok) { %>
+                  <span class="text-green-600 font-semibold">OK</span>
+                <% } else { %>
+                  <span class="text-red-600 font-semibold">Incomplets</span>
+                <% } %>
+              </td>
+              <td class="px-4 py-3 border-b border-gray-200"><%= new Date(res.updatedAt).toLocaleString() %></td>
+              <% if (['réservé', 'dossier_incomplet', 'en_attente_de_validation', 'validé'].includes(res.statut)) { %>
+                <td class="px-4 py-3 border-b border-gray-200 text-red-600 font-semibold">Acompte non payé</td>
+                <td class="px-4 py-3 border-b border-gray-200">
+                  <form action="/api/payments/<%= res.id %>" method="GET">
+                    <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white px-3 py-1 rounded">Procéder au paiement de l'acompte</button>
+                  </form>
+                </td>
+              <% } else { %>
+                <td class="px-4 py-3 border-b border-gray-200 text-green-600 font-semibold">Acompte payé</td>
+                <td class="px-4 py-3 border-b border-gray-200">
+                  <button disabled class="bg-gray-300 text-gray-700 px-3 py-1 rounded cursor-not-allowed">Paiement effectué</button>
+                </td>
+              <% } %>
+              <td class="px-4 py-3 border-b border-gray-200">voyage non payé</td>
+              <td class="px-4 py-3 border-b border-gray-200">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded">Payer</button>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</div>
 
-<% if (registrations.length === 0) { %>
-  <p>Vous n’avez encore effectué aucune réservation.</p>
-<% } else { %>
-  <table class="table-reservations">
-    <thead>
-      <tr>
-        <th>Voyage</th>
-        <th>Dates</th>
-        <th>Prix (€)</th>
-        <th>Statut</th>
-        <th>Documents</th>
-        <th>Dernière mise à jour</th>
-        <th>Statut acompte</th>
-        <th>Paiement acompte</th>
-        <th>Statut paiement</th>
-        <th>Paiement</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% registrations.forEach(res => { %>
-        <tr>
-          <td><%= res.Trip.lieux %></td>
-          <td>
-            du <%= new Date(res.Trip.dateDeb).toLocaleDateString() %> 
-            au <%= new Date(res.Trip.dateFin).toLocaleDateString() %>
-          </td>
-          <td><%= res.prix.toFixed(2) %></td>
-          <td><%= res.statut %></td>
-          <td>
-            <% if (res.documents_ok) { %>
-               OK
-            <% } else { %>
-               Incomplets
-            <% } %>
-          </td>
-          <td><%= new Date(res.updatedAt).toLocaleString() %></td>
-          <% if (res.statut == 'réservé' || res.statut == 'dossier_incomplet' || res.statut == 'en_attente_de_validation' || res.statut == 'validé' ){%>
-            <td>Acompte non payé</td>
-            <td>
-            <form action="/api/payments/<%= res.id %>" method="GET">
-            <button type="submit">Procéder au paiement de l'acompte</button>
-            </form>
-            </td>
-            <%}else{%>
-            <td>Acompte payé</td>
-            <td><button>Paiement effectué</button></td>
-            <%}%>
-            <td>voyage non payé</td>
-            <td><button>Payer</button></td>
-
-          
-        </tr>
-      <% }) %>
-    </tbody>
-  </table>
-<% } %>
-
-
-<style>
-
-    body{
-        padding:0;
-    }
-
-    form{
-        display: inline;
-        margin: 0;
-        padding: 0;
-        border: none;
-    }
-
-
-  .table-reservations {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  .table-reservations th,
-  .table-reservations td {
-    padding: 0.8em;
-    border: 1px solid #ccc;
-    text-align: center;
-  }
-
-  .table-reservations th {
-    background-color: #f5f5f5;
-  }
-
-  tr:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-
-
-</style>
+<%- include('partials/footer') %>

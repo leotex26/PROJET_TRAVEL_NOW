@@ -28,7 +28,9 @@ async function seedDatabase() {
         dateFin: new Date('2025-07-10'),
         nb_de_places: 10,
         statut: 'DISPONIBLE',
-        type_doc_requis: ['passeport']
+        type_doc_requis: ['passeport'],
+        moyens_transport: 'BATEAU',
+        img_path:'images/maroc.jpg'
       }),
       Trip.create({
         lieux: 'Italie',
@@ -36,7 +38,9 @@ async function seedDatabase() {
         dateFin: new Date('2025-08-15'),
         nb_de_places: 5,
         statut: 'DISPONIBLE',
-        type_doc_requis: ["carte_d'identité"]
+        type_doc_requis: ["carte_d'identité"],
+        moyens_transport: 'BATEAU',
+        img_path:'images/italie.jpg'
       }),
       Trip.create({
         lieux: 'Canada',
@@ -44,7 +48,9 @@ async function seedDatabase() {
         dateFin: new Date('2025-07-15'),
         nb_de_places: 15,
         statut: 'DISPONIBLE',
-        type_doc_requis: ["passeport"]
+        type_doc_requis: ["passeport"],
+        moyens_transport: 'AVION',
+        img_path:'images/canada.jpg'
       }),
       Trip.create({
         lieux: 'Prague',
@@ -52,7 +58,9 @@ async function seedDatabase() {
         dateFin: new Date('2025-09-15'),
         nb_de_places: 18,
         statut: 'DISPONIBLE',
-        type_doc_requis: ["passeport"]
+        type_doc_requis: ["passeport"],
+        moyens_transport: 'CAR',
+        img_path:'images/prague.jpg'
       }),
       Trip.create({
         lieux: 'Londres',
@@ -60,7 +68,9 @@ async function seedDatabase() {
         dateFin: new Date('2025-07-15'),
         nb_de_places: 12,
         statut: 'ANNULÉ',
-        type_doc_requis: ["identité"]
+        type_doc_requis: ["identité"],
+        moyens_transport: 'TRAIN',
+        img_path:'images/londres.jpg'
       }),
       Trip.create({
         lieux: 'Berlin',
@@ -68,7 +78,9 @@ async function seedDatabase() {
         dateFin: new Date('2025-09-15'),
         nb_de_places: 16,
         statut: 'ANNULÉ',
-        type_doc_requis: ["identité"]
+        type_doc_requis: ["identité"],
+        moyens_transport: 'TRAIN',
+        img_path:'images/berlin.jpg'
       }),
       Trip.create({
         lieux: 'New-york',
@@ -76,8 +88,50 @@ async function seedDatabase() {
         dateFin: new Date('2026-07-15'),
         nb_de_places: 21,
         statut: 'ANNULÉ',
-        type_doc_requis: ["visa"]
-      })
+        type_doc_requis: ["visa"],
+        moyens_transport: 'AVION',
+        img_path:'images/new-york.jpg'
+      }),
+      Trip.create({
+        lieux: 'Paris',
+        dateDeb: new Date('2026-06-22'),
+        dateFin: new Date('2026-07-14'),
+        nb_de_places: 23,
+        statut: 'DISPONIBLE',
+        type_doc_requis: [],
+        moyens_transport: 'AVION',
+        img_path:'images/paris.jpg'
+      }),
+      Trip.create({
+        lieux: 'Londres',
+        dateDeb: new Date('2026-06-24'),
+        dateFin: new Date('2026-07-14'),
+        nb_de_places: 12,
+        statut: 'DISPONIBLE',
+        type_doc_requis: [],
+        moyens_transport: 'AVION',
+        img_path:'images/londres.jpg'
+      }),
+      Trip.create({
+        lieux: 'Berlin',
+        dateDeb: new Date('2025-11-12'),
+        dateFin: new Date('2025-11-07'),
+        nb_de_places: 5,
+        statut: 'DISPONIBLE',
+        type_doc_requis: ["identité"],
+        moyens_transport: 'AVION',
+        img_path:'images/berlin.jpg'
+      }),
+      Trip.create({
+        lieux: 'Corse',
+        dateDeb: new Date('2026-06-22'),
+        dateFin: new Date('2025-07-23'),
+        nb_de_places: 5,
+        statut: 'DISPONIBLE',
+        type_doc_requis: ["identité"],
+        moyens_transport: 'AVION',
+        img_path:'images/corse.jpg'
+      }),
     ]);
 
     // 📝 Réservations

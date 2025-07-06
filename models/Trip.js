@@ -31,6 +31,16 @@ const Trip = sequelize.define('Trip', {
     type: DataTypes.JSON, // tableau JSON, ex: ['passeport', 'visa']
     allowNull: false,
     defaultValue: []
+  },
+  moyens_transport: {
+    type: DataTypes.ENUM('AVION','TRAIN','CAR','BATEAU'), 
+    allowNull: true,
+    defaultValue: 'AVION'
+  },
+  img_path: {
+    type: DataTypes.STRING, 
+    allowNull: true,
+    defaultValue: 'images/default.jpg'
   }
 }, {
   tableName: 'trips',

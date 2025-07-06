@@ -3,112 +3,91 @@
 <head>
   <meta charset="UTF-8">
   <link rel="icon" type="image/x-icon" href="/icons/logo.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="/css/main.css">
   <title><%= titre %></title>
-  <style>
-    html {
-     height: 100%; 
-    }
-    body {
-  height: 100%;
-  font-family: 'Segoe UI', sans-serif;
-  background: #f9f9f9;
-  margin: 0;
-  padding: 0;
-}
-
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: linear-gradient(to right, #6ec1e4, #40e0d0);
-  color: white;
-  padding: 1rem 2rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-header h1 a {
-  color: white;
-  text-decoration: none;
-  font-size: 1.8rem;
-  font-weight: bold;
-}
-
-.loginOpt {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.loginOpt a, .loginOpt span {
-  color: white;
-  font-weight: 500;
-  text-decoration: none;
-  padding: 0.4rem 0.8rem;
-  border-radius: 4px;
-  transition: background 0.2s ease;
-}
-
-.loginOpt a:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-main {
-  padding: 2rem;
-}
-
-footer {
-  background-color: #eee;
-  padding: 1rem;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-a {
-  text-decoration: none;
-}
-
-input, button {
-  padding: 0.5rem;
-  margin: 0.3rem 0;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-form {
-  max-width: 400px;
-  margin: 2rem auto;
-  background: white;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-  </style>
 </head>
-<body>
-  <header>
-    <h1><a href="/">travelNow</a></h1>
+<body class="bg-white text-gray-900 font-sans leading-relaxed">
+  
+  <header class="sticky top-0 z-50 bg-amber-400  shadow-sm">
 
-<div class="loginOpt">
-<% if (isAuthenticated && currentUser) { %>
-  <span><%= currentUser.username %></span>
-  <a href="/api/profile">Profil</a>
-  <a href="/api/registrations/me">Mes réservations</a>
-  <a href="/api/auth/logout">Se déconnecter</a>
-  <% if (isAdmin) { %>
-    <a href="/api/trips/form">créer un voyage</a>
-    <a href="/api/documents/users">Membres</a>
-    <a href="/admin/dashboard">Dashboard</a>
-  <% } %>
-<% } else { %>
-  <a href="/api/auth/login">Se connecter</a>
-  <a href="/api/auth/signup">S'enregistrer</a>
-<% } %>
-
-</div>
-
-
-
+    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+  
+      <!-- Logo -->
+      <a href="/" class="text-2xl font-extrabold text-white tracking-wide hover:text-yellow-300 transition-colors duration-300">
+        travelNow
+      </a>
+  
+      <!-- Navigation -->
+      <nav class="flex items-center gap-0 text-sm font-semibold text-white">
+        <% if (isAuthenticated && currentUser) { %>
+          <span class="hidden md:inline px-4 border-r border-white/40">Bonjour, <%= currentUser.username %></span>
+  
+          <a href="/api/profile" class="nav-link">Profil</a>
+          <a href="/api/registrations/me" class="nav-link">Mes réservations</a>
+          <a href="/api/auth/logout" class="nav-link">Déconnexion</a>
+  
+          <% if (isAdmin) { %>
+            <a href="/api/trips/form" class="nav-link">Créer</a>
+            <a href="/api/documents/users" class="nav-link">Membres</a>
+            <a href="/admin/dashboard" class="nav-link">Admin</a>
+          <% } %>
+  
+        <% } else { %>
+          <a href="/api/auth/login" class="nav-link">Connexion</a>
+          <a href="/api/auth/signup" class="nav-link">S’enregistrer</a>
+        <% } %>
+      </nav>
+  
+    </div>
   </header>
-  <main>
+  
+  <style>
+    header {
+      
+      box-shadow: 0 2px 8px rgb(168 85 0 / 0.4);
+    }
+  
+    .nav-link {
+      position: relative;
+      padding: 0.75rem 1rem;
+      border-left: 1px solid rgba(255 255 255 / 0.4);
+      border-right: 1px solid rgba(255 255 255 / 0.4);
+      background: linear-gradient(to bottom, rgba(255 255 255 / 0.15), transparent 50%, rgba(255 255 255 / 0.15) 100%);
+      color: white;
+      text-decoration: none;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+  
+    /* Premier lien pas de bordure gauche */
+    nav > .nav-link:first-of-type {
+      border-left: none;
+      border-radius: 0.25rem 0 0 0.25rem;
+    }
+  
+    /* Dernier lien pas de bordure droite */
+    nav > .nav-link:last-of-type {
+      border-right: none;
+      border-radius: 0 0.25rem 0.25rem 0;
+    }
+  
+    .nav-link:hover,
+    .nav-link:focus {
+      background: linear-gradient(to bottom, rgba(255 255 255 / 0.35), rgba(255 255 255 / 0.15));
+      color: #fff9c4; /* jaune pâle pour le hover */
+      outline: none;
+    }
+  
+    .nav-link:focus-visible {
+      outline: 2px solid #fff9c4;
+      outline-offset: 3px;
+    }
+  
+    /* Séparateur entre span "Bonjour" et premier lien */
+    nav > span {
+      /* déjà défini par border-r dans le span */
+      color: rgba(255 255 255 / 0.85);
+      font-weight: 600;
+    }
+  </style>
+
